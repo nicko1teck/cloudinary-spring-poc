@@ -1,6 +1,14 @@
 package com.o1teck;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import org.cloudinary.json.JSONObject;
@@ -9,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,55 +41,38 @@ public class Controller
     	
     	
     @PostMapping("/upload")
-    @ResponseBody
-    public String uploadFile(Model model, @RequestParam("file") MultipartFile file) throws IOException {
+    public String uploadFile(Model model, @RequestParam("file") MultipartFile file) throws IOException, URISyntaxException {
     	
     	System.out.println();
     	System.out.println("Called the uploadFile() method !");
     	System.out.println();
     	
-    	String fileName = file.getOriginalFilename();
+    	//set upload params
+    	Map params = ObjectUtils.asMap(
+    			"cloud_name", "nicko1teck",
+    		    "public_id", "my_folder/my_sub_folder/"+file.getOriginalFilename(),
+    		    //overwrite", true,
+    		   // "notification_url", "https://mysite/notify_endpoint",
+    		    "resource_type", "auto");
     	
-       
-    	Map uploadResult2 = cloudinary.uploader().upload(fileName, ObjectUtils.emptyMap());
-        // Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, params);
-        
-        // Cloudinary cloudinaryConfig = Singleton.getCloudinary();
-    	// Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, params);
+    	//Create path to file's location on server
+    	// Path filepath = Paths.get("C:\\Users\\Owner\\Desktop\\test_cloudinary_directory\\", file.getOriginalFilename());    			
     	
-    	//Map uploadResult2 = cloudinary.uploader().upload(new File (fileName), params);
-    	//Map uploadResult = cloudinary.uploader().upload(new File("doc.mp4"), params);
+    	//write incoming file's bytes to this new file on the server
+    	// try (OutputStream os = Files.newOutputStream(filepath)) {
+    	//	   os.write(file.getBytes());
+    	//	}
     	
-    	JSONObject json=new JSONObject(uploadResult2);
-        String url=json.getString("url");
+    	//point new file object at the file-on-server
+    	//File tempImageFile = new File(filepath.toString());
     	
-    	//String responseString = uploadResult2.toString();
-        
-        // TEST
-    	System.out.println();
-    	System.out.println(url);
-    	System.out.println();
-        
-        return url;
+    	//upload the file
+    	Map uploadResult3 = cloudinary.uploader().unsignedUpload(file.getBytes(), "apzbavjn", params);
+    	    	
+        //return url;
+    	return uploadResult3.toString();
     	
-    	//Uploads file to Cloudinary, returning a String of its URL
-    	//String url = cloudinaryService.uploadFile(file);
-    	
-    	//  AT THIS POINT THE UPLOAD HAS BEEN ACCOMPLISHED... theoretically.
-    	//  Now...
-    		// 1) save the url in the DB
-    		// 2) pass the url back to the JSP
-    		// 3) reload the jsp
-    	
-    	//	Pass profilePhotoName back to JSP
-    	//modelAndView.addObject("profilePhotoName", url);
-    	
-       // modelAndView.setViewName("redirect:/profile");
-    	
-       // return responseString;
-    	
-    	//return user.getProfilePhotoUrl();
-    	//return new ResponseEntity(url, HttpStatus.OK);
+  
     }
     
     
