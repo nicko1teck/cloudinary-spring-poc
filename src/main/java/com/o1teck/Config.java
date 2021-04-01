@@ -1,5 +1,6 @@
 package com.o1teck;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
@@ -12,9 +13,20 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 
 @Configuration
 public class Config implements WebMvcConfigurer {
+	
+	@Value("${cloudinary.cloud_name}")
+	private String cloudName;
+
+	@Value("${cloudinary.api_key}")
+	private String apiKey;
+
+	@Value("${cloudinary.api_secret}")
+	private String apiSecret;
+	
 	
 		
 	
@@ -50,10 +62,15 @@ public class Config implements WebMvcConfigurer {
 	    @Bean
 		public Cloudinary cloudinaryConfig() {
 			Cloudinary cloudinary = null;
-			cloudinary = new Cloudinary();
-			cloudinary.config.cloudName = "nicko1teck";
-			cloudinary.config.apiKey = "697697678268857";
-			cloudinary.config.apiSecret = "UFH1ZXH_4UZ8XNHchIj8Lwhpszw";
+			//cloudinary = new Cloudinary();
+			cloudinary = new Cloudinary(ObjectUtils.asMap(
+					  "cloud_name", cloudName,
+					  "api_key", apiKey,
+					  "api_secret", apiSecret));
+			
+			//cloudinary.config.cloudName = cloudName;
+			//cloudinary.config.apiKey = apiKey;
+			//cloudinary.config.apiSecret = apiSecret;
 			return cloudinary;
 		}
 	    
