@@ -8,28 +8,22 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesView;
+//import org.thymeleaf.spring4.SpringTemplateEngine;
+//import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
-@Configuration
+//@Configuration
 public class Config implements WebMvcConfigurer {
-	
-	@Value("${cloudinary.cloud_name}")
-	private String cloudName;
-
-	@Value("${cloudinary.api_key}")
-	private String apiKey;
-
-	@Value("${cloudinary.api_secret}")
-	private String apiSecret;
 	
 	
 		
-	
+	/*
 	    @Bean
 	    @Description("Thymeleaf template resolver serving HTML 5")
 	    public ClassLoaderTemplateResolver templateResolver() {
@@ -59,21 +53,7 @@ public class Config implements WebMvcConfigurer {
 	        return viewResolver;
 	    }
 	    
-	    @Bean
-		public Cloudinary cloudinaryConfig() {
-			Cloudinary cloudinary = null;
-			//cloudinary = new Cloudinary();
-			cloudinary = new Cloudinary(ObjectUtils.asMap(
-					  "cloud_name", cloudName,
-					  "api_key", apiKey,
-					  "api_secret", apiSecret));
-			
-			//cloudinary.config.cloudName = cloudName;
-			//cloudinary.config.apiKey = apiKey;
-			//cloudinary.config.apiSecret = apiSecret;
-			return cloudinary;
-		}
-	    
+	  
 	    /*
 	    @Override
 	    public void addViewControllers(ViewControllerRegistry registry) {

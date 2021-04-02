@@ -35,7 +35,8 @@ public class Controller
 
     @RequestMapping("/")
     public ModelAndView UploadPage(ModelAndView modelAndView) {
-    	modelAndView.setViewName("uploadview");
+    	//modelAndView.setViewName("uploadview");
+    	modelAndView.setViewName("app.homepage");
     	return modelAndView;
     }
     	
