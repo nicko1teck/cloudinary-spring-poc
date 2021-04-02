@@ -1,4 +1,4 @@
-package com.o1teck;
+package com.o1teck.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
